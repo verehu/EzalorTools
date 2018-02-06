@@ -15,6 +15,9 @@ import subprocess
 
 import numpy as np
 import xlsxwriter as xw
+
+from markhelper import MarkHelper
+from record import Record
 from style import Style
 from datetime import datetime
 
@@ -102,15 +105,25 @@ def create_table(worksheet, style, process, row, data):
     row += 1
     # write contents of table
     column_max_width_array = [0] * len(AUTOCOLUMN_WIDTH_INDEXS)
-    for record in data:
-        for column, columnValue in enumerate(record):
-            value = get_value(column, record)
-            worksheet.write(row, column, value, get_style(style, column, record))
+    for recordFieldValues in data:
+        # fill the mark
+        record = Record(recordFieldValues)
+        mark = MarkHelper.get_io_mark(record, style)
+
+        for column, columnValue in enumerate(recordFieldValues):
+            value = get_value(column, recordFieldValues)
+            worksheet.write(row, column, value, mark.style)
             # get max width
             if (column in AUTOCOLUMN_WIDTH_INDEXS):
                 i = AUTOCOLUMN_WIDTH_INDEXS.index(column)
                 column_max_width_array[i] = max(column_max_width_array[i], len(value))
 
+        # write mark
+        column += 1
+        if (column in AUTOCOLUMN_WIDTH_INDEXS):
+            i = AUTOCOLUMN_WIDTH_INDEXS.index(column)
+            column_max_width_array[i] = max(column_max_width_array[i], len(mark.message))
+        worksheet.write(row, column, mark.message, mark.style)
         row += 1
 
     # set column width
@@ -125,10 +138,6 @@ def get_value(column, record):
         java_timestamp = record[column]
         return datetime.fromtimestamp(java_timestamp / 1000.0).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
     return record[column]
-
-
-def get_style(style, column, record):
-    return style.common
 
 
 def get_process_by_package(packageName):
