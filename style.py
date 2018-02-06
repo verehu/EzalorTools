@@ -2,8 +2,8 @@ class Style(object):
     def __init__(self, workbook) -> None:
         super().__init__()
 
-        # column auto fit
-        self.column_auto_fit = workbook.add_format({'text_justlast': True})
+        # title
+        self.title = workbook.add_format({'align': 'center', 'font_size': 20})
 
         # specific
         self.table_headers = workbook.add_format(

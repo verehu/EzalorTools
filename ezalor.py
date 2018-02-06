@@ -71,13 +71,26 @@ def export(packageName, path):
     # get process by packageName
     processes = get_process_by_package(packageName)
 
+    # init column_max_width_array
+    column_max_width_array = [0] * len(AUTOCOLUMN_WIDTH_INDEXS)
+
     # loop create table group by process
     row = 0
     for process in processes:
-        row = create_table(worksheet, style, process, row, get_data_by_process(packageName, process))
+        row = create_table(worksheet, style, process, row, get_data_by_process(packageName, process),
+                           column_max_width_array)
+
+    # auto fit column width
+    auto_fit_column_width(worksheet, column_max_width_array)
 
     workbook.close()
-    print("export successful!")
+    print("\nexport successful:" + path)
+
+
+def auto_fit_column_width(worksheet, column_max_width_array):
+    # set column width
+    for j in range(len(column_max_width_array)):
+        worksheet.set_column(AUTOCOLUMN_WIDTH_INDEXS[j], AUTOCOLUMN_WIDTH_INDEXS[j], column_max_width_array[j])
 
 
 def get_data_by_process(packageName, process):
@@ -92,19 +105,16 @@ def get_data_by_process(packageName, process):
     return results
 
 
-def create_table(worksheet, style, process, row, data):
-    # set column width
-    worksheet.set_column('N:N', None, style.column_auto_fit)
-
+def create_table(worksheet, style, process, row, data, column_max_width_array):
     # write a title of table
-    worksheet.write(row, 0, process + " ioHistory")
+    worksheet.set_row(row, 24)
+    worksheet.merge_range(row, 0, row, 14, process + " ioHistory", style.title)
     row += 1
     # write headers of table
     for index, item in enumerate(tableheaders):
         worksheet.write(row, index, tableheaders[index], style.table_headers)
     row += 1
-    # write contents of table
-    column_max_width_array = [0] * len(AUTOCOLUMN_WIDTH_INDEXS)
+
     for recordFieldValues in data:
         # fill the mark
         record = Record(recordFieldValues)
@@ -125,11 +135,6 @@ def create_table(worksheet, style, process, row, data):
             column_max_width_array[i] = max(column_max_width_array[i], len(mark.message))
         worksheet.write(row, column, mark.message, mark.style)
         row += 1
-
-    # set column width
-    for j in range(len(column_max_width_array)):
-        worksheet.set_column(AUTOCOLUMN_WIDTH_INDEXS[j], AUTOCOLUMN_WIDTH_INDEXS[j], column_max_width_array[j])
-
     return row
 
 
@@ -181,8 +186,9 @@ def main(argv):
                 print_help_and_exit()
 
             packageName = arg
-            outPath = packageName + ".xlsx" if len(args) == 0 \
-                else args[0] + "/" + packageName + ".xlsx"
+            filename = packageName + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ".xlsx"
+            outPath = filename if len(args) == 0 \
+                else args[0] + "/" + filename
 
             export(packageName, outPath)
 
