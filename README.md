@@ -40,9 +40,9 @@ python3 ezalor.py -e com.wellerv.ezalor.sample [path]
 ```
 
  Different colors in the data represent different levels, 
- 1. red -> error
- 2. yellow -> warning
- 3. white -> ok
+ 1. **red** -> error
+ 2. **yellow** -> warning
+ 3. **white** -> ok
  
  ## Different level
  ### 1. error
@@ -51,6 +51,8 @@ python3 ezalor.py -e com.wellerv.ezalor.sample [path]
  - unbufferedIO: Marked when  io operation bufferr is too small.
  The condition like google code in Android O:
  ![ioTracker][4]
+ ### 3.ok
+ - ok : ok
 
 ## Support
 Any problem?
