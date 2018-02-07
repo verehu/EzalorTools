@@ -13,7 +13,6 @@ import sys, getopt
 import sqlite3
 import subprocess
 
-import numpy as np
 import xlsxwriter as xw
 
 from markhelper import MarkHelper
@@ -157,11 +156,6 @@ def get_process_by_package(packageName):
             if (re.match(DB_NAME_REG.format(packageName), file)):
                 files.append(re.findall(r"ezalor_(.+?).db", file)[0])
     return files
-
-
-def transpose(list_):
-    return [list(i) for i in np.array(list_).T]
-
 
 #    os.system("rm " + path + "ezalor.db")
 def get_cursor(dbpath):
