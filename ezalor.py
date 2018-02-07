@@ -42,8 +42,7 @@ def print_help_and_exit():
           "         -e, --export [packageName] [exportPath] :export a html to the path\n"
           "\n"
           "     Examples:\n"
-          "         ezalor -s on                            switch on the ezalor\n"
-          "         ezalor -e com.android.gallery2          export html\n"
+          "         ezalor -e com.wellerv.ezalor.sample          export excel\n"
           )
     sys.exit(0)
 
