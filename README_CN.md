@@ -5,22 +5,20 @@
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![Code Climate](https://img.shields.io/codeclimate/issues/github/me-and/mdf.svg)](https://github.com/WellerV/Ezalor/issues)
 
-EzalorTools is [Ezalor][1]'s export tool.Now it supports excel.Export results show io operation analysis, marking the irrational location.
+EzalorTools是[Ezalor][1]'的数据导出工具。目前只支持导出excel,导出结果会对io操作进行分析,标记出不合理的位置.
  
  ![export][2]
- 
- ## [中文版点击这里](README_CN.md)
- 
-## Getting started
-First, you need [Python3][3] environment.
-It's ok if you get the result like follow in terminal.
+
+## 开始
+首先, 你需要安装[Python3][3]环境。
+如果你得到以下结果,说明环境可用。
 ```shell
 $ python3 --version
 
 Python 3.x.x
 ```
 
-## Export Data
+## 导出数据
 This is a python script for the ezalor tools which is used to io monitor.You can use the script to open or
 off the switch, or point the package name which you want to monitor it only.The core function is to export
 data what ezalor is record.
@@ -34,31 +32,32 @@ Usage : ezalor [Options] [Args]
      Examples:
          ezalor -e com.wellerv.ezalor.sample          export excel
 ```
-When you want to export data, command like this:
+运行下面命令导出数据:
 ```shell
 python3 ezalor.py -e com.wellerv.ezalor.sample [path]
 ```
 
- Different colors in the data represent different levels, 
+ 不同的颜色代表不同的等级:
  1. **red** -> error
  2. **yellow** -> warning
  3. **white** -> ok
  
- ## Different level
+ ## 不同等级
+ 不同的情况将会被标为不同的等级。
  ### 1. error
- - io in main thread: Marked when io operation occurs on main thread
+ - io in main thread: io操作发生在主线程
  ### 2. warning
- - unbufferedIO: Marked when  io operation bufferr is too small.
- The condition like google code in Android O:
+ - unbufferedIO: io操作缓存不合理,太小。
+判断调节和谷歌android o源码相同,
  ![ioTracker][4]
  ### 3.ok
- - ok : ok
+ - ok : 通过
 
-## Support
-Any problem?
+## 支持
+有任何问题?
 
-1. Submit issues
-2. Contact me for help by [email][5]
+1. 提交issues
+2. 通过[email][5]联系我
 
 
   [1]: https://github.com/WellerV/Ezalor
